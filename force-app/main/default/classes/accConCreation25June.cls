@@ -121,8 +121,47 @@ public static Id caseCreation(String origin, String status) {
         List<opportunity>  op=[select Name,AccountId,StageName from opportunity where AccountId=:acc];
         return op;
     }
-    //comment
-    //2nd Comment
+    //from dev console
     
-      
+      //done changes
+      //
+    
+    @InvocableMethod
+    public static List<accResponse> accConCreationn(List<accWrapper> accDetails) {
+        List<accResponse> results = new List<accResponse>();
+        accResponse res = new accResponse();
+
+        try {
+          
+            accWrapper req = accDetails[0];
+
+            Account acc = new Account(Name = req.Name, Description = req.Description);
+            insert acc;
+
+            // Success case
+            res.AccountId = acc.Id;
+        } catch (Exception e) {
+            // Error case
+            res.ErrorMessage = 'Error while creating account: ' + e.getMessage();
+        }
+
+        results.add(res);
+        return results;
+    }
+    public class accWrapper{
+        @InvocableVariable
+        public string Name;
+        @InvocableVariable
+        public string Description;
+    }
+     public class accResponse {
+        @InvocableVariable
+        public Id AccountId;
+
+        @InvocableVariable
+        public String ErrorMessage;
+    }
+    
+    //Command from code
+    
 }
